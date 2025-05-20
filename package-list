@@ -1,0 +1,7 @@
+$dokka.format:html-v1
+$dokka.linkExtension:html
+
+module:core
+eth.likespro.lpfcp
+module:ktor
+eth.likespro.lpfcp.ktor

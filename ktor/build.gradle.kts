@@ -1,6 +1,6 @@
 dependencies {
-    implementation("io.ktor:ktor-server-netty:2.3.7")
-    implementation("io.ktor:ktor-server-core:2.3.7")
+    implementation("io.ktor:ktor-server-netty:3.1.3")
+    implementation("io.ktor:ktor-server-core:3.1.3")
 
     implementation("org.json:json:20250107")
 

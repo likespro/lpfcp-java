@@ -7,7 +7,7 @@
  */
 
 val GROUP = "io.github.likespro" // Until normal group ID - eth.likespro.commons
-val VERSION = "1.0.0"
+val VERSION = "1.1.0"
 val NAME = "LPFCP Java"
 val DESCRIPTION = "LPFCP protocol implementation in Java/Kotlin"
 val URL = "https://github.com/likespro/lpfcp-java"

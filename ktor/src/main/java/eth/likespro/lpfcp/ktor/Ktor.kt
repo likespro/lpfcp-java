@@ -25,14 +25,14 @@ object Ktor {
      *
      * @property engine The Netty application engine instance used to handle server operations.
      */
-    class LPFCPServer(val engine: NettyApplicationEngine) {
+    class LPFCPServer(val embeddedServer: EmbeddedServer<NettyApplicationEngine, NettyApplicationEngine.Configuration>) {
         /**
          * Starts the Netty application engine.
          *
          * @param wait Specifies whether to block the current thread until the engine stops. Defaults to true.
          * @return The instance of the started NettyApplicationEngine.
          */
-        fun start(wait: Boolean): LPFCPServer = this.apply { engine.start(wait) }
+        fun start(wait: Boolean): LPFCPServer = this.apply { embeddedServer.engine.start(wait) }
 
         /**
          * Stops the Netty application engine with the specified grace period and timeout.
@@ -40,7 +40,7 @@ object Ktor {
          * @param gracePeriodMillis The time in milliseconds to wait for ongoing requests to complete before forcefully stopping. Defaults to 500 milliseconds.
          * @param timeoutMillis The maximum time in milliseconds to wait for the engine to stop. Defaults to 1500 milliseconds.
          */
-        fun stop(gracePeriodMillis: Long = 500, timeoutMillis: Long = 1500) = engine.stop(gracePeriodMillis, timeoutMillis)
+        fun stop(gracePeriodMillis: Long = 500, timeoutMillis: Long = 1500) = embeddedServer.engine.stop(gracePeriodMillis, timeoutMillis)
     }
 
     /**

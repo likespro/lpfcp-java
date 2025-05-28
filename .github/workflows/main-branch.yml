@@ -9,6 +9,7 @@ on:
       - 'CONTRIBUTING.md'
       - 'LICENSE'
       - '.github/**'
+      - 'examples/**'
   workflow_dispatch:
 
 jobs:

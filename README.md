@@ -47,6 +47,8 @@ LPFCP Java implements the LPFCP protocol — check out the [LPFCP protocol speci
 - 🔌 **Java & Kotlin Support** – Use LPFCP from either language with the same ease.
 - 🛠 **Zero-Boilerplate** – No manual serialization or wiring; LPFCP takes care of it using reflection.
 
+### Read our [Wiki](https://likespro.gitbook.io/lpfcp-java)
+
 ---
 
 ## Getting Started

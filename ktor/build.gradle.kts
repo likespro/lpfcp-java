@@ -4,7 +4,7 @@ dependencies {
 
     implementation("org.json:json:20250107")
 
-    implementation("io.github.likespro:commons-reflection:3.0.0")
+    implementation("io.github.likespro:commons-reflection:3.0.2")
 
     implementation(project(":core"))
 }

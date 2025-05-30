@@ -123,7 +123,7 @@ object LPFCP {
             functionArgs.toMap().forEach { (argName, argValue) ->
                 function.parameters.find { it.name == argName || it.index.toString() == argName }?.let { param ->
                     try {
-                        args[param] = (argValue as String).decodeObject(param.type.javaType.boxed()) // We need to make .boxed() due to bug in `commons` reflection lib, which doesn't correctly handle Java primitive types
+                        args[param] = (argValue as String).decodeObject(param.type.javaType)
                     } catch (_: Exception) { }
                 }
             }
@@ -180,7 +180,7 @@ object LPFCP {
      * @return A proxy instance of the specified interface.
      */
     inline fun <reified Interface> getProcessor(processorLPFCP: URI) = getProcessor<Interface> { request, type ->
-        (processorLPFCP.post(request.toString()).decodeObject(EncodableResult::class.java.getParametrizedType(type.boxed())) as EncodableResult<*>).getOrThrow()
+        (processorLPFCP.post(request.toString()).decodeObject(EncodableResult::class.java.getParametrizedType(type)) as EncodableResult<*>).getOrThrow()
     }
 
     /**

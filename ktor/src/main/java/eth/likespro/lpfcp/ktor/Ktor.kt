@@ -11,7 +11,6 @@ package eth.likespro.lpfcp.ktor
 import eth.likespro.commons.reflection.ObjectEncoding.encodeObject
 import eth.likespro.lpfcp.LPFCP.ExposedFunction
 import eth.likespro.lpfcp.LPFCP.processRequest
-import io.ktor.server.application.*
 import io.ktor.server.engine.*
 import io.ktor.server.netty.*
 import io.ktor.server.request.*
@@ -50,9 +49,9 @@ object Ktor {
      * @param processor The object containing the functions to be invoked with [ExposedFunction] annotation.
      * @param port The port on which the server will listen to (default is `8080`).
      */
-    fun lpfcpServer(processor: Any, port: Int = 8080) = LPFCPServer(embeddedServer(Netty, port) {
+    fun lpfcpServer(processor: Any, port: Int = 8080, eraseStackTraces: Boolean = false) = LPFCPServer(embeddedServer(Netty, port) {
         routing {
-            lpfcp(processor)
+            lpfcp(processor, eraseStackTraces = eraseStackTraces)
         }
     })
 
@@ -62,10 +61,12 @@ object Ktor {
      * @param processor The object containing the functions to be invoked with [ExposedFunction] annotation.
      * @param path The path for the LPFCP endpoint (default is "/lpfcp").
      */
-    fun Route.lpfcp(processor: Any, path: String = "/lpfcp") {
+    fun Route.lpfcp(processor: Any, path: String = "/lpfcp", eraseStackTraces: Boolean = false) {
         post(path) {
             val request = JSONObject(call.receiveText())
-            call.respond(processRequest(request, processor).encodeObject())
+            call.respond(processRequest(request, processor).apply {
+                if(eraseStackTraces) eraseStackTrace()
+            }.encodeObject())
         }
     }
 }

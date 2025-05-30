@@ -58,7 +58,7 @@ public class KtorTestsJava {
     public static Ktor.LPFCPServer server;
 
     @BeforeAll static void setupKtorServer() {
-        server = Ktor.INSTANCE.lpfcpServer(calculator, 8080).start(false);
+        server = Ktor.INSTANCE.lpfcpServer(calculator, 8080, false).start(false);
     }
 
     @AfterAll static void teardownKtorServer() {

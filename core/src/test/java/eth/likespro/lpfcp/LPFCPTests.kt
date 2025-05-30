@@ -6,7 +6,6 @@ import org.json.JSONObject
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
-import kotlin.jvm.java
 
 class LPFCPTests {
     /*
@@ -188,6 +187,7 @@ class LPFCPTests {
 
     interface Calculator {
         fun hello(): String
+        fun hello(name: String?): String
         fun add(a: Int, b: Int): Int
         fun add(a: String = "1", b: String = "2"): String
         fun multiply(a: Int, b: Int): Int
@@ -199,6 +199,9 @@ class LPFCPTests {
         val calculator = object : Calculator {
             @LPFCP.ExposedFunction
             override fun hello(): String = "Hello, World!"
+
+            @LPFCP.ExposedFunction
+            override fun hello(name: String?): String = "Hello, $name!"
 
             @LPFCP.ExposedFunction
             override fun add(a: Int, b: Int): Int = a + b
@@ -216,12 +219,20 @@ class LPFCPTests {
         }
     }
 
-    @Test fun getProcessor_withLambda_proceedsRequest_withValidFunctionWithNoArgsAndNoArgs_returnsSuccess() {
+    @Test fun getProcessor_withLambda_proceedsRequest_withValidFunctionWithNoArgs_returnsSuccess() {
         val processor = LPFCP.getProcessor<Calculator> { request, _ ->
             LPFCP.processRequest(request, calculator).getOrThrow()
         }
         val result = processor.hello()
         assertEquals("Hello, World!", result)
+    }
+
+    @Test fun getProcessor_withLambda_proceedsRequest_withValidFunctionWithNullArgs_returnsSuccess() {
+        val processor = LPFCP.getProcessor<Calculator> { request, _ ->
+            LPFCP.processRequest(request, calculator).getOrThrow()
+        }
+        val result = processor.hello(null)
+        assertEquals("Hello, null!", result)
     }
 
     @Test fun getProcessor_withLambda_proceedsRequest_withValidFunctionAndArgs_returnsSuccess() {

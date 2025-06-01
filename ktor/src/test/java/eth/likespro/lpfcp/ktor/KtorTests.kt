@@ -8,6 +8,7 @@ import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
+import java.lang.ArithmeticException
 import java.net.URI
 
 class KtorTests {
@@ -99,10 +100,10 @@ class KtorTests {
         assertEquals("45", response)
     }
 
-    @Test fun getProcessor_withLambda_proceedsRequest_withFunctionThrowingException_returnsExecutedFunctionThrowException() {
+    @Test fun getProcessor_withLambda_proceedsRequest_withFunctionThrowingException_returnsArithmeticException() {
         val processor = LPFCP.getProcessor<Calculator>("http://localhost:8080/lpfcp")
         assertEquals(
-            LPFCP.ExecutedFunctionThrowException::class.java,
+            ArithmeticException::class.java,
             assertThrows<WrappedException.Exception> { processor.divide(5, 0) }.wrappedException.exceptionClass
         )
     }

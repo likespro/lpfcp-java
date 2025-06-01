@@ -2,6 +2,7 @@
 `core` module:
 - Made JSON library (`org.json`) an `api` dependency
 - Disabled types auto-boxing when working with Java primitives
+- Remove `ExecutedFunctionThrowException` and replace with direct exception propagation in `LPFCP`.
 
 `ktor` module:
 - Updated Ktor to version `3.1.3`

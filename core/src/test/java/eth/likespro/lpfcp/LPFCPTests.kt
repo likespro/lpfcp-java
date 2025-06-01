@@ -6,6 +6,7 @@ import org.json.JSONObject
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
+import java.lang.ArithmeticException
 
 class LPFCPTests {
     /*
@@ -165,14 +166,14 @@ class LPFCPTests {
     }
 
     @Test
-    fun processRequest_withFunctionThrowingException_returnsExecutedFunctionThrowException() {
+    fun processRequest_withFunctionThrowingException_returnsIllegalStateException() {
         val processor = object {
             @LPFCP.ExposedFunction
             fun throwError(): Nothing = throw kotlin.IllegalStateException("Error occurred")
         }
         val request = JSONObject("""{"functionName": "throwError", "functionArgs": {}}""")
         val result = LPFCP.processRequest(request, processor)
-        assertEquals(LPFCP.ExecutedFunctionThrowException::class.java, result.failure?.exceptionClass)
+        assertEquals(IllegalStateException::class.java, result.failure?.exceptionClass)
     }
 
 
@@ -275,12 +276,12 @@ class LPFCPTests {
         assertEquals("45", result)
     }
 
-    @Test fun getProcessor_withLambda_proceedsRequest_withFunctionThrowingException_returnsExecutedFunctionThrowException() {
+    @Test fun getProcessor_withLambda_proceedsRequest_withFunctionThrowingException_returnsArithmeticException() {
         val processor = LPFCP.getProcessor<Calculator> { request, _ ->
             LPFCP.processRequest(request, calculator).getOrThrow()
         }
         assertEquals(
-            LPFCP.ExecutedFunctionThrowException::class.java,
+            ArithmeticException::class.java,
             assertThrows<WrappedException.Exception> { processor.divide(5, 0) }.wrappedException.exceptionClass
         )
     }

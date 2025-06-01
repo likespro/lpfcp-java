@@ -57,12 +57,6 @@ object LPFCP {
      */
     class NoMatchingFunctionFoundException(msg: String) : RuntimeException(msg)
 
-    /**
-     * Exception thrown when the invoked function throws an exception during execution.
-     * @param e The original exception thrown by the function.
-     */
-    class ExecutedFunctionThrowException(e: Throwable) : RuntimeException(e)
-
 
 
     /*
@@ -102,7 +96,6 @@ object LPFCP {
      * @throws IncorrectFunctionNameException If the `functionName` key is missing or invalid.
      * @throws IncorrectFunctionArgsException If the `functionArgs` key is missing or invalid.
      * @throws NoMatchingFunctionFoundException If no matching function is found.
-     * @throws ExecutedFunctionThrowException If the invoked function throws an exception.
      */
     @OptIn(ExperimentalStdlibApi::class)
     fun processRequestUnsafely(request: JSONObject, processor: Any): Any? {
@@ -142,7 +135,7 @@ object LPFCP {
                 return result
             } catch (e: InvocationTargetException) {
                 // Handle exceptions thrown by the invoked function
-                throw ExecutedFunctionThrowException(e.cause!!)
+                throw e.cause!!
             } catch (_: IllegalArgumentException) {
                 // Handle argument mismatch errors
                 // Skip this function and continue searching for another one

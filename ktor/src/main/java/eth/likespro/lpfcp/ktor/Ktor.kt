@@ -8,6 +8,7 @@
 
 package eth.likespro.lpfcp.ktor
 
+import eth.likespro.commons.models.WrappedException
 import eth.likespro.commons.reflection.ObjectEncoding.encodeObject
 import eth.likespro.lpfcp.LPFCP.ExposedFunction
 import eth.likespro.lpfcp.LPFCP.processRequest
@@ -48,10 +49,12 @@ object Ktor {
      *
      * @param processor The object containing the functions to be invoked with [ExposedFunction] annotation.
      * @param port The port on which the server will listen to (default is `8080`).
+     * @param exceptionDetailsConfiguration The configuration for the exception details to be included in the response
+     * (default is [WrappedException.DetailsConfiguration.INCLUDE_ALL]).
      */
-    fun lpfcpServer(processor: Any, port: Int = 8080, eraseStackTraces: Boolean = false) = LPFCPServer(embeddedServer(Netty, port) {
+    fun lpfcpServer(processor: Any, port: Int = 8080, exceptionDetailsConfiguration: WrappedException.DetailsConfiguration = WrappedException.DetailsConfiguration.INCLUDE_ALL) = LPFCPServer(embeddedServer(Netty, port) {
         routing {
-            lpfcp(processor, eraseStackTraces = eraseStackTraces)
+            lpfcp(processor, exceptionDetailsConfiguration = exceptionDetailsConfiguration)
         }
     })
 
@@ -60,13 +63,15 @@ object Ktor {
      *
      * @param processor The object containing the functions to be invoked with [ExposedFunction] annotation.
      * @param path The path for the LPFCP endpoint (default is "/lpfcp").
+     * @param exceptionDetailsConfiguration The configuration for the exception details to be included in the response
+     * (default is [WrappedException.DetailsConfiguration.INCLUDE_ALL]).
      */
-    fun Route.lpfcp(processor: Any, path: String = "/lpfcp", eraseStackTraces: Boolean = false) {
+    fun Route.lpfcp(processor: Any, path: String = "/lpfcp", exceptionDetailsConfiguration: WrappedException.DetailsConfiguration = WrappedException.DetailsConfiguration.INCLUDE_ALL) {
         post(path) {
             val request = JSONObject(call.receiveText())
-            call.respond(processRequest(request, processor).apply {
-                if(eraseStackTraces) eraseStackTrace()
-            }.encodeObject())
+            call.respond(processRequest(request, processor)
+                    .applyExceptionDetailsConfiguration(exceptionDetailsConfiguration)
+                    .encodeObject())
         }
     }
 }

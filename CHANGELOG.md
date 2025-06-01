@@ -7,9 +7,9 @@
 `ktor` module:
 - Updated Ktor to version `3.1.3`
 - `Ktor.LPFCPServer` now holds the entire embedded server instead of `NettyApplicationEngine`
-- Added `eraseStackTraces` param to `lpfcpServer` and `lpfcp` route. 
-When it is set — all stack traces are automatically erased from responses to a client.
-This will help to hide internal server implementations from users.
+- Added `exceptionDetailsConfiguration` parameter to `lpfcpServer` and `lpfcp` route.
+It allows specifying the details to be included in response when the exception is thrown.
+This will help to hide internal server implementations from users if needed.
 ### Other
 - Updated dependencies' versions
 

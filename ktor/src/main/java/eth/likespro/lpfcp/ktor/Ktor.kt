@@ -32,7 +32,7 @@ object Ktor {
          * @param wait Specifies whether to block the current thread until the engine stops. Defaults to true.
          * @return The instance of the started NettyApplicationEngine.
          */
-        fun start(wait: Boolean): LPFCPServer = this.apply { embeddedServer.engine.start(wait) }
+        fun start(wait: Boolean): LPFCPServer = this.apply { embeddedServer.start(wait) }
 
         /**
          * Stops the Netty application engine with the specified grace period and timeout.

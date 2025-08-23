@@ -1,5 +1,6 @@
 package eth.likespro.lpfcp.ktor;
 
+import eth.likespro.commons.models.WrappedException;
 import eth.likespro.lpfcp.LPFCP;
 import eth.likespro.lpfcp.LPFCPJava;
 import org.junit.jupiter.api.AfterAll;
@@ -55,10 +56,11 @@ public class KtorTestsJava {
     }
 
     public static CalculatorImpl calculator = new CalculatorImpl();
+    public static Integer port = 8090;
     public static Ktor.LPFCPServer server;
 
     @BeforeAll static void setupKtorServer() {
-        server = Ktor.INSTANCE.lpfcpServer(calculator, 8080, false).start(false);
+        server = Ktor.INSTANCE.lpfcpServer(calculator, port, WrappedException.DetailsConfiguration.Companion.getINCLUDE_ALL()).start(false);
     }
 
     @AfterAll static void teardownKtorServer() {
@@ -76,13 +78,13 @@ public class KtorTestsJava {
 
 
     @Test public void ktorServer_withValidFunctionWithNoArgsAndNoArgs_returnsSuccess() throws URISyntaxException {
-        Calculator processor = LPFCPJava.getProcessor(Calculator.class, new URI("http://localhost:8080/lpfcp"));
+        Calculator processor = LPFCPJava.getProcessor(Calculator.class, new URI("http://localhost:" + port + "/lpfcp"));
         String response = processor.hello();
         assertEquals("Hello, World!", response);
     }
 
     @Test public void ktorServer_withValidFunctionAndArgs_returnsSuccess() {
-        Calculator processor = LPFCPJava.getProcessor(Calculator.class, "http://localhost:8080/lpfcp");
+        Calculator processor = LPFCPJava.getProcessor(Calculator.class, "http://localhost:" + port + "/lpfcp");
         Integer response = processor.add(3, 5);
         assertEquals(8, response);
     }

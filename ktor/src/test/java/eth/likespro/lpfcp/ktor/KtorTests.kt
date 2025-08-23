@@ -41,11 +41,12 @@ class KtorTests {
             override fun divideSafely(a: Int, b: Int): Int? = if (b == 0) null else a / b
         }
 
+        val port = 8090
         var server: Ktor.LPFCPServer? = null
 
         @JvmStatic
         @BeforeAll fun setupKtorServer() {
-            server = lpfcpServer(calculator).start(wait = false)
+            server = lpfcpServer(calculator, port).start(wait = false)
         }
 
         @JvmStatic
@@ -65,43 +66,43 @@ class KtorTests {
 
 
     @Test fun ktorServer_withValidFunctionWithNoArgsAndNoArgs_returnsSuccess() {
-        val processor = LPFCP.getProcessor<Calculator>(URI("http://localhost:8080/lpfcp"))
+        val processor = LPFCP.getProcessor<Calculator>(URI("http://localhost:$port/lpfcp"))
         val response = processor.hello()
         assertEquals("Hello, World!", response)
     }
 
     @Test fun ktorServer_withValidFunctionAndArgs_returnsSuccess() {
-        val processor = LPFCP.getProcessor<Calculator>("http://localhost:8080/lpfcp")
+        val processor = LPFCP.getProcessor<Calculator>("http://localhost:$port/lpfcp")
         val response = processor.add(3, 5)
         assertEquals(8, response)
     }
 
     @Test fun getProcessor_withLambda_proceedsRequest_withValidFunctionReturningNullAndArgs_returnsSuccess() {
-        val processor = LPFCP.getProcessor<Calculator>("http://localhost:8080/lpfcp")
+        val processor = LPFCP.getProcessor<Calculator>("http://localhost:$port/lpfcp")
         val response = processor.divideSafely(3, 0)
         assertEquals(null, response)
     }
 
     @Test fun getProcessor_withLambda_proceedsRequest_withValidOverloadedFunctionAndArgs_returnsSuccess() {
-        val processor = LPFCP.getProcessor<Calculator>("http://localhost:8080/lpfcp")
+        val processor = LPFCP.getProcessor<Calculator>("http://localhost:$port/lpfcp")
         val response = processor.add("3", "5")
         assertEquals("35", response)
     }
 
     @Test fun getProcessor_withLambda_proceedsRequest_withValidFunctionWithDefaultArgsAndArgs_returnsSuccess() {
-        val processor = LPFCP.getProcessor<Calculator>("http://localhost:8080/lpfcp")
+        val processor = LPFCP.getProcessor<Calculator>("http://localhost:$port/lpfcp")
         val response = processor.add(b = "5")
         assertEquals("15", response)
     }
 
     @Test fun getProcessor_withLambda_proceedsRequest_withValidFunctionWithDefaultArgsAndArgsInReverseOrder_returnsSuccess() {
-        val processor = LPFCP.getProcessor<Calculator>("http://localhost:8080/lpfcp")
+        val processor = LPFCP.getProcessor<Calculator>("http://localhost:$port/lpfcp")
         val response = processor.add(b = "5", a = "4")
         assertEquals("45", response)
     }
 
     @Test fun getProcessor_withLambda_proceedsRequest_withFunctionThrowingException_returnsArithmeticException() {
-        val processor = LPFCP.getProcessor<Calculator>("http://localhost:8080/lpfcp")
+        val processor = LPFCP.getProcessor<Calculator>("http://localhost:$port/lpfcp")
         assertEquals(
             ArithmeticException::class.java,
             assertThrows<WrappedException.Exception> { processor.divide(5, 0) }.wrappedException.exceptionClass

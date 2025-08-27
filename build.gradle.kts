@@ -55,7 +55,7 @@ allprojects {
 
     repositories {
         mavenCentral()
-        mavenLocal() // For easier testing
+        // mavenLocal() // For easier testing
     }
 }
 

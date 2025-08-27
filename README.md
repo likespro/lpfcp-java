@@ -58,8 +58,8 @@ LPFCP Java implements the LPFCP protocol — check out the [LPFCP protocol speci
 **Gradle**:
 ```kotlin
 dependencies {
-    implementation("io.github.likespro:lpfcp-core:1.0.0") // Core features: getProcessor, .processRequest, etc.
-    implementation("io.github.likespro:lpfcp-ktor:1.0.0") // Integration with Ktor: lpfcpServer, Route.lpfcp, etc.
+    implementation("io.github.likespro:lpfcp-core:1.1.0") // Core features: getProcessor, .processRequest, etc.
+    implementation("io.github.likespro:lpfcp-ktor:1.1.0") // Integration with Ktor, for servers: lpfcpServer, Route.lpfcp, etc.
 }
 ```
 
@@ -69,14 +69,14 @@ dependencies {
 <dependency>
     <groupId>io.github.likespro</groupId>
     <artifactId>lpfcp-core</artifactId>
-    <version>1.0.0</version>
+    <version>1.1.0</version>
 </dependency>
 
-<!-- Integration with Ktor: lpfcpServer, Route.lpfcp, etc. -->
+<!-- Integration with Ktor, for servers: lpfcpServer, Route.lpfcp, etc. -->
 <dependency>
     <groupId>io.github.likespro</groupId>
     <artifactId>lpfcp-ktor</artifactId>
-    <version>1.0.0</version>
+    <version>1.1.0</version>
 </dependency>
 ```
 
@@ -90,7 +90,7 @@ interface Calculator {
 ```
 
 ### 2. Implement & Annotate (Server Code)
-Annotate your implementation class with `@LPFCP.ExposedFunction`:
+Annotate your implementation class functions with `@LPFCP.ExposedFunction`:
 ```kotlin
 class CalculatorImpl : Calculator {
     @LPFCP.ExposedFunction
